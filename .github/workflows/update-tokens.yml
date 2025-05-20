@@ -28,6 +28,8 @@ jobs:
         run: npm install axios jsonwebtoken
 
       - name: Get Token
+        env:
+          PEM: ${{ secrets.PEM }}
         run: |
           TOKEN=$(node request-access-token.js)
           echo "RECEIVED_TOKEN=$TOKEN" >> $GITHUB_ENV
