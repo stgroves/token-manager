@@ -9,6 +9,11 @@ jobs:
   refresh-token:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Choose a stable version
+
       - name: Checkout Repository
         uses: actions/checkout@v3
 
