@@ -1,0 +1,40 @@
+name: Refresh PAT Token
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily
+  workflow_dispatch:
+
+jobs:
+  refresh-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify Repository List File
+        run: |
+          if [ ! -f repos.txt ]; then
+            echo "Error: repos.txt not found!"
+            exit 1
+          fi
+
+      - name: Verify GitHub CLI Authentication
+        run: |
+          gh auth status || (echo "GitHub CLI not authenticated!" && exit 1)
+
+      - name: Get Token
+        run: |
+          TOKEN=$(node request-access-token.js)
+          echo "RECEIVED_TOKEN=$TOKEN" >> $GITHUB_ENV
+
+      - name: Validate Token
+        run: |
+          if [ -z "$RECEIVED_TOKEN" ]; then
+            echo "Error: Token generation failed."
+            exit 1
+          fi
+
+      - name: Update Secrets Across Repos
+        run: |
+          while IFS= read -r REPO; do
+            echo "Updating secret for $REPO..."
+            gh secret set ACCESS_TOKEN -b "$RECEIVED_TOKEN" --repo "$REPO" || echo "Failed to update $REPO"
+          done < repos.txt
