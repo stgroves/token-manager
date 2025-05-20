@@ -1,5 +1,5 @@
-const { Octokit } = require('@octokit/core');
-const generateJWT = require('./generate-jwt.js');
+import { Octokit } from '@octokit/core';
+import generateJWT from './generate-jwt.js';
 
 const INSTALLATION_ID = process.env.INSTALLATION_ID;
 const MAX_RETRIES = 3; // Set retry count
