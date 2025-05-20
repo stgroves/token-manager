@@ -19,10 +19,6 @@ jobs:
             exit 1
           fi
 
-      - name: Verify GitHub CLI Authentication
-        run: |
-          gh auth status || (echo "GitHub CLI not authenticated!" && exit 1)
-
       - name: Get Token
         run: |
           TOKEN=$(node request-access-token.js)
