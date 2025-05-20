@@ -24,6 +24,9 @@ jobs:
             exit 1
           fi
 
+      - name: Install Dependencies
+        run: npm install @octokit/core jsonwebtoken
+
       - name: Get Token
         env:
           PEM: ${{ secrets.PEM }}
