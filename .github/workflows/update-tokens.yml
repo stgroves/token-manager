@@ -12,7 +12,7 @@ jobs:
       - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18' # Choose a stable version
+          node-version: '20' # Choose a stable version
 
       - name: Checkout Repository
         uses: actions/checkout@v3
@@ -23,9 +23,6 @@ jobs:
             echo "Error: repos.txt not found!"
             exit 1
           fi
-
-      - name: Install Dependencies
-        run: npm install axios jsonwebtoken
 
       - name: Get Token
         env:
