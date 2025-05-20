@@ -1,4 +1,4 @@
-const axios = require('axios');
+const { Octokit } = require('@octokit/core');
 const generateJWT = require('./generate-jwt.js');
 
 const INSTALLATION_ID = process.env.INSTALLATION_ID;
@@ -10,11 +10,18 @@ async function getAccessToken() {
     while (attempt <= MAX_RETRIES) {
         try {
             const JWT = generateJWT();
-            const response = await axios.post(
-                `https://api.github.com/app/installations/${INSTALLATION_ID}/access_tokens`,
-                {},
-                {headers: {Authorization: `Bearer ${JWT}`, Accept: "application/vnd.github+json"}}
-            );
+            const octokit = new Octokit({ auth: JWT });
+
+            /*const installations = await octokit.request("GET /app/installations");
+            const installationId = installations.data[0]?.id;
+
+            if (!installationId)
+                throw new Error("No valid installation found!");*/
+
+            const response = await octokit.request("POST /app/installations/{INSTALLATION_ID}/access_tokens", {
+                installation_id: INSTALLATION_ID,
+                headers: { "X-GitHub-Api-Version": "2022-11-28" }
+            });
 
             console.log(response.data.token); //Acts as 'return'
         } catch (error) {
