@@ -9,6 +9,9 @@ jobs:
   refresh-token:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
       - name: Verify Repository List File
         run: |
           if [ ! -f repos.txt ]; then
