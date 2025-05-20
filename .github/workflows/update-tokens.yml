@@ -19,6 +19,9 @@ jobs:
             exit 1
           fi
 
+      - name: Install Dependencies
+        run: npm install axios jsonwebtoken
+
       - name: Get Token
         run: |
           TOKEN=$(node request-access-token.js)
