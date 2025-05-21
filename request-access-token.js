@@ -25,6 +25,9 @@ async function getAccessToken() {
             if (!installationId)
                 throw new Error("No valid installation found!");*/
 
+            console.log(INSTALLATION_ID);
+            console.log(repos);
+
             const response = await octokit.request("POST /app/installations/{INSTALLATION_ID}/access_tokens", {
                 installation_id: INSTALLATION_ID,
                 repositories: repos,
