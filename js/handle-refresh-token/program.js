@@ -1,5 +1,5 @@
 import {Octokit} from 'octokit';
-import request from 'js/octokit/request.js';
+import request from '../octokit/request.js';
 
 export default async function () {
     const octokit = new Octokit();
