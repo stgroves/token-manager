@@ -13,6 +13,11 @@ jobs:
   refresh-token:
     runs-on: ubuntu-latest
     steps:
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Choose a stable version
+
       - name: Install Dependencies
         run: npm install
 
