@@ -1,0 +1,25 @@
+name: Handle Refresh Token
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: 'Initial OAuth code from https://github.com/login/oauth/authorize?client_id=Ov23li78daWXEg9q4LAS&scope=repo,write:packages,offline_access'
+        required: false
+        default: ""
+        type: string
+  schedule:
+    - cron: '0 0 1 */5 *'
+jobs:
+  refresh-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Program
+        env:
+          CLIENT_ID: 'Ov23li78daWXEg9q4LAS'
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+          AUTH_CODE: ${{ inputs.code }}
+        run: node handle-refresh-token.js --verbose

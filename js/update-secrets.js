@@ -21,9 +21,9 @@ export default async function (app, repos) {
 
     console.log(`Attempting to get access token.`);
 
-    const accessToken = await request(
+    const response = await request(
         octokit,
-        'POST /app/installations/{installation_id}/access_tokens',
+        'POST /login/oauth/access_token',
         {
             installation_id: INSTALL_ID,
             repositories: repos,
@@ -32,8 +32,7 @@ export default async function (app, repos) {
                 secrets: 'read'
             },
             headers: HEADER
-        },
-        'access_token'
+        }
     );
 
     await _sodium.ready;
