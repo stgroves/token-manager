@@ -17,7 +17,7 @@ export default async function (octokit, restQuery, queryObject, propertyName = n
 
             if (attempt >= MAX_RETRIES) {
                 console.error(`Failed after ${MAX_RETRIES} attempts. Exiting.`);
-                return null;
+                process.exit(1);
             }
 
             console.log(`Retrying in ${RETRY_DELAY_MS / 1000} seconds...`);

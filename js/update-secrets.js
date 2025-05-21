@@ -33,7 +33,8 @@ export default async function (app, repos) {
             },
             headers: HEADER
         },
-        'access_token');
+        'access_token'
+    );
 
     await _sodium.ready;
     const sodium = _sodium;
