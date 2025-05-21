@@ -8,12 +8,22 @@ export default async function (JWT, repos) {
     const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
     const OWNER = process.env.USER_ID;
     const KEY = process.env.SECRET_KEY;
+    const INSTALL_ID = process.env.INSTALLATION_ID;
+
+    if (!OWNER)
+        throw new Error("Missing USER_ID.");
+
+    if (!KEY)
+        throw new Error("Missing SECRET_KEY.");
+
+    if (!INSTALL_ID)
+        throw new Error("Missing INSTALLATION_ID.");
 
     const accessToken = await request(
         octokit,
         'POST /app/installations/{installation_id}/access_tokens',
         {
-            installation_id: process.env.INSTALLATION_ID,
+            installation_id: INSTALL_ID,
             repositories: repos,
             permissions: {
                 packages: 'write',
