@@ -1,4 +1,5 @@
 import fs from 'fs';
+import generateJwt from './js/generate-jwt.js';
 import updateSecrets from './js/update-secrets.js';
 
 const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
@@ -10,4 +11,4 @@ const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
     }) // Remove whitespace
     .filter(repo => repo); // Remove empty lines
 
-await updateSecrets(repos);
+await updateSecrets(generateJwt(), repos);
