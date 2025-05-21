@@ -30,30 +30,12 @@ jobs:
           fi
 
       - name: Install Dependencies
-        run: npm install @octokit/core jsonwebtoken
+        run: npm install @octokit/core jsonwebtoken libsodium-wrappers
 
       - name: Get Token
         env:
           PEM: ${{ secrets.PEM }}
           INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
+          USER_ID: "STGroves"
         run: |
-          TOKEN=$(node request-access-token.js)
-          echo "RECEIVED_TOKEN=$TOKEN" >> $GITHUB_ENV
-
-      - name: Validate Token
-        run: |
-          if [ -z "$RECEIVED_TOKEN" ]; then
-            echo "Error: Token generation failed."
-            exit 1
-          fi
-
-      - name: Update Secrets Across Repos
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          while IFS= read -r REPO; do
-            echo "Updating secret for $REPO..."
-            gh secret set ACCESS_TOKEN -b "$RECEIVED_TOKEN" --repo "$REPO" || { 
-              echo "Failed to update $REPO"; exit 1; 
-            }
-          done < "$REPOS"
+          TOKEN=$(node run-program.js)
