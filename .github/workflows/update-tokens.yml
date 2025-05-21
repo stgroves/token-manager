@@ -48,6 +48,8 @@ jobs:
           fi
 
       - name: Update Secrets Across Repos
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           while IFS= read -r REPO; do
             echo "Updating secret for $REPO..."
