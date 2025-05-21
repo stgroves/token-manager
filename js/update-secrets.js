@@ -7,7 +7,7 @@ export default async function (app, repos) {
     if (!INSTALL_ID)
         throw new Error("Missing INSTALLATION_ID.");
 
-    const octokit = app.getInstallationOctokit(INSTALL_ID);
+    const octokit = await app.getInstallationOctokit(INSTALL_ID);
 
     const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
     const OWNER = process.env.USER_ID;
