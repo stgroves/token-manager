@@ -9,7 +9,11 @@ const RETRY_DELAY_MS = 2000; // 2 seconds
 // Read and format repo list
 const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
     .split('\n') // Split by new line
-    .map(repo => repo.trim()) // Remove whitespace
+    .map(repo => {
+        const repoPath = repo.trim().split('/');
+
+        return repoPath[repoPath.length - 1];
+    }) // Remove whitespace
     .filter(repo => repo); // Remove empty lines
 
 async function getAccessToken() {
