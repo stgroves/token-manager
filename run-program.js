@@ -1,4 +1,3 @@
-import generateJWT from './js/generate-jwt.js';
 import fs from 'fs';
 import updateSecrets from './js/update-secrets.js';
 
