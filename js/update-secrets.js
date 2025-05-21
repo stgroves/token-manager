@@ -5,6 +5,8 @@ import _sodium from 'libsodium-wrappers';
 export default async function (repos) {
     const octokit = new Octokit({auth: process.env.TOKEN});
 
+    console.log(process.env.TOKEN);
+
     const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
     const OWNER = process.env.USER_ID;
     const KEY = process.env.SECRET_KEY;
