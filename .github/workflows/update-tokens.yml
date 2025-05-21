@@ -35,6 +35,7 @@ jobs:
       - name: Get Token
         env:
           PEM: ${{ secrets.PEM }}
+          INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
         run: |
           TOKEN=$(node request-access-token.js)
           echo "RECEIVED_TOKEN=$TOKEN" >> $GITHUB_ENV

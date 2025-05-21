@@ -29,7 +29,7 @@ async function getAccessToken() {
             console.error(`${repos.join(', ')}\n`);
             console.error(installationID);
 
-            const response = await octokit.request("POST /app/installations/{installationID}/access_tokens", {
+            const response = await octokit.request("POST /app/installations/{installation_id}/access_tokens", {
                 installation_id: installationID,
                 repositories: repos,
                 permissions: {
