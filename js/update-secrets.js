@@ -2,14 +2,14 @@ import {Octokit} from '@octokit/core';
 import request from './request.js';
 import _sodium from 'libsodium-wrappers';
 
-export default function (JWT, repos) {
+export default async function (JWT, repos) {
     const octokit = new Octokit({auth: JWT});
 
     const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
     const OWNER = process.env.USER_ID;
     const KEY = process.env.SECRET_KEY;
 
-    const accessToken = request(
+    const accessToken = await request(
         octokit,
         'POST /app/installations/{installation_id}/access_tokens',
         {
@@ -23,8 +23,8 @@ export default function (JWT, repos) {
         },
         'access_token');
 
-    repos.forEach(repo => {
-        const publicKey = request(
+    for (const repo of repos) {
+        const publicKey = await request(
             octokit,
             'GET /repos/{owner}/{repo}/actions/secrets/public-key',
             {
@@ -35,7 +35,7 @@ export default function (JWT, repos) {
             'key_id'
         );
 
-        request(
+        await request(
             octokit,
             'PUT /repos/{owner}/{repo}/actions/secrets/{secret_name}',
             {
@@ -47,11 +47,11 @@ export default function (JWT, repos) {
                 headers: HEADER
             }
         );
-    });
+    }
 }
 
 async function encrypt(key, token) {
-    return await (async() => {
+    return (async() => {
         await _sodium.ready;
         const sodium = _sodium;
 

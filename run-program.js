@@ -12,4 +12,4 @@ const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
     }) // Remove whitespace
     .filter(repo => repo); // Remove empty lines
 
-updateSecrets(JWT, repos);
+await updateSecrets(JWT, repos);
