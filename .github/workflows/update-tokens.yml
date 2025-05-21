@@ -30,7 +30,7 @@ jobs:
           fi
 
       - name: Install Dependencies
-        run: npm install @octokit/core jsonwebtoken libsodium-wrappers
+        run: npm install
 
       - name: Get Token
         env:
