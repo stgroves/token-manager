@@ -19,18 +19,8 @@ async function getAccessToken() {
             const JWT = generateJWT();
             const octokit = new Octokit({ auth: JWT });
 
-            const installations = await octokit.request("GET /app/installations");
-            const installationID = installations.data[0]?.id;
-
-            if (!installationID)
-                throw new Error("No valid installation found!");
-
-            console.error(INSTALLATION_ID);
-            console.error(`${repos.join(', ')}\n`);
-            console.error(installationID);
-
             const response = await octokit.request("POST /app/installations/{installation_id}/access_tokens", {
-                installation_id: installationID,
+                installation_id: INSTALLATION_ID,
                 repositories: repos,
                 permissions: {
                     packages: 'write',
@@ -40,6 +30,7 @@ async function getAccessToken() {
             });
 
             console.log(response.data.token); //Acts as 'return'
+            return response.data.access_token;
         } catch (error) {
             console.error(`Attempt ${attempt} failed:`, error.response ? error.response.data : error.message);
 
