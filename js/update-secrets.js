@@ -2,21 +2,22 @@ import request from './request.js';
 import _sodium from 'libsodium-wrappers';
 
 export default async function (app, repos) {
-    const octokit = app.octokit;
+    const INSTALL_ID = process.env.INSTALLATION_ID;
+
+    if (!INSTALL_ID)
+        throw new Error("Missing INSTALLATION_ID.");
+
+    const octokit = app.getInstallationOctokit(INSTALL_ID);
 
     const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
     const OWNER = process.env.USER_ID;
     const KEY = process.env.SECRET_KEY;
-    const INSTALL_ID = process.env.INSTALLATION_ID;
 
     if (!OWNER)
         throw new Error("Missing USER_ID.");
 
     if (!KEY)
         throw new Error("Missing SECRET_KEY.");
-
-    if (!INSTALL_ID)
-        throw new Error("Missing INSTALLATION_ID.");
 
     console.log(`Attempting to get access token.`);
 
