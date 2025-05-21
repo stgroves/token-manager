@@ -5,10 +5,12 @@ const PATH = process.env.PATH;
 
 switch (PATH) {
     case 'HANDLE_REFRESH_TOKEN':
+        console.log('Running "Handle Refresh Token" program...');
         runHandleRefreshToken();
         break;
 
     case 'UPDATE_SECRETS':
+        console.log('Running "Update Secrets" program...');
         runUpdateSecrets();
         break;
 

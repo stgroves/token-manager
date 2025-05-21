@@ -31,4 +31,4 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           AUTH_CODE: ${{ inputs.code }}
-        run: node program.js --verbose
+        run: node run-program.js --verbose
