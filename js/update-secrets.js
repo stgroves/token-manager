@@ -2,8 +2,8 @@ import {Octokit} from '@octokit/core';
 import request from './request.js';
 import _sodium from 'libsodium-wrappers';
 
-export default async function (JWT, repos) {
-    const octokit = new Octokit({auth: JWT});
+export default async function (repos) {
+    const octokit = new Octokit({auth: process.env.TOKEN});
 
     const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
     const OWNER = process.env.USER_ID;

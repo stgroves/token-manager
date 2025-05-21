@@ -34,7 +34,7 @@ jobs:
 
       - name: Get Token
         env:
-          PEM: ${{ secrets.PEM }}
+          TOKEN: ${{ secrets.GITHUB_TOKEN }}
           INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
           USER_ID: "STGroves"
           SECRET_KEY: "ACCESS_TOKEN"
