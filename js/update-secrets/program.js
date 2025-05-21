@@ -1,4 +1,4 @@
-import request from './request.js';
+import request from '../octokit/request.js';
 import _sodium from 'libsodium-wrappers';
 
 export default async function (app, repos) {
@@ -76,3 +76,29 @@ function encrypt(sodium, key, token) {
 
     return Promise.resolve(sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL));
 }
+
+import fs from 'fs';
+import {App} from 'octokit';
+
+const APP_ID = 1301208;
+
+const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
+    .split('\n') // Split by new line
+    .map(repo => {
+        const repoPath = repo.trim().split('/');
+
+        return repoPath[repoPath.length - 1];
+    }) // Remove whitespace
+    .filter(repo => repo); // Remove empty lines
+
+const app = new App({
+    appId: APP_ID, // Replace with your GitHub App ID
+    privateKey: process.env.PEM, // Replace with your private key
+});
+
+if (!app) {
+    console.error(`Could not find app ${APP_ID}`);
+    process.exit(1);
+}
+
+await updateSecrets(app, repos);

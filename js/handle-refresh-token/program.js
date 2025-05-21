@@ -1,7 +1,7 @@
 import {Octokit} from 'octokit';
-import request from 'request';
+import request from 'js/octokit/request.js';
 
-async function manageOAuthToken() {
+export default async function () {
     const octokit = new Octokit();
 
     const CLIENT_ID = process.env.CLIENT_ID;
@@ -47,6 +47,3 @@ async function manageOAuthToken() {
         console.error("Token refresh failed:", error.message);
     }
 }
-
-// Execute token management
-manageOAuthToken();

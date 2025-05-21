@@ -1,26 +1,18 @@
-import fs from 'fs';
-import updateSecrets from './js/update-secrets.js';
-import {App} from 'octokit';
+import runHandleRefreshToken from './js/handle-refresh-token/program.js'
+import runUpdateSecrets from './js/update-secrets/program.js'
 
-const APP_ID = 1301208;
+const PATH = process.env.PATH;
 
-const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
-    .split('\n') // Split by new line
-    .map(repo => {
-        const repoPath = repo.trim().split('/');
+switch (PATH) {
+    case 'HANDLE_REFRESH_TOKEN':
+        runHandleRefreshToken();
+        break;
 
-        return repoPath[repoPath.length - 1];
-    }) // Remove whitespace
-    .filter(repo => repo); // Remove empty lines
+    case 'UPDATE_SECRETS':
+        runUpdateSecrets();
+        break;
 
-const app = new App({
-    appId: APP_ID, // Replace with your GitHub App ID
-    privateKey: process.env.PEM, // Replace with your private key
-});
-
-if (!app) {
-    console.error(`Could not find app ${APP_ID}`);
-    process.exit(1);
+    default:
+        console.error(`${PATH} not recognised. Unable to run program.`);
+        process.exit(1);
 }
-
-await updateSecrets(app, repos);
