@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "@octokit/core": "^7.0.2",
     "jsonwebtoken": "^9.0.2",
-    "libsodium-wrappers": "^0.7.15"
+    "libsodium-wrappers": "^0.7.15",
+    "octokit": "^5.0.2"
   },
   "description": "",
   "name": "token-refresher",

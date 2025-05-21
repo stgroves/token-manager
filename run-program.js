@@ -1,6 +1,8 @@
 import fs from 'fs';
-import generateJwt from './js/generate-jwt.js';
 import updateSecrets from './js/update-secrets.js';
+import {App} from 'octokit';
+
+const APP_ID = 1301208;
 
 const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
     .split('\n') // Split by new line
@@ -11,4 +13,14 @@ const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
     }) // Remove whitespace
     .filter(repo => repo); // Remove empty lines
 
-await updateSecrets(generateJwt(), repos);
+const app = new App({
+    appId: APP_ID, // Replace with your GitHub App ID
+    privateKey: process.env.TOKEN, // Replace with your private key
+});
+
+if (!app) {
+    console.error(`Could not find app ${APP_ID}`);
+    process.exit(1);
+}
+
+await updateSecrets(app, repos);
