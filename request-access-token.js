@@ -1,9 +1,16 @@
 import { Octokit } from '@octokit/core';
 import generateJWT from './generate-jwt.js';
+import fs from 'fs';
 
 const INSTALLATION_ID = process.env.INSTALLATION_ID;
 const MAX_RETRIES = 3; // Set retry count
 const RETRY_DELAY_MS = 2000; // 2 seconds
+
+// Read and format repo list
+const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
+    .split('\n') // Split by new line
+    .map(repo => repo.trim()) // Remove whitespace
+    .filter(repo => repo); // Remove empty lines
 
 async function getAccessToken() {
     let attempt = 1;
@@ -20,6 +27,11 @@ async function getAccessToken() {
 
             const response = await octokit.request("POST /app/installations/{INSTALLATION_ID}/access_tokens", {
                 installation_id: INSTALLATION_ID,
+                repositories: repos,
+                permissions: {
+                    packages: 'write',
+                    secrets: 'read'
+                },
                 headers: { "X-GitHub-Api-Version": "2022-11-28" }
             });
 
