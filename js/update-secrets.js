@@ -19,6 +19,8 @@ export default async function (JWT, repos) {
     if (!INSTALL_ID)
         throw new Error("Missing INSTALLATION_ID.");
 
+    console.log(`Attempting to get access token.`);
+
     const accessToken = await request(
         octokit,
         'POST /app/installations/{installation_id}/access_tokens',
@@ -37,6 +39,8 @@ export default async function (JWT, repos) {
     const sodium = _sodium;
 
     for (const repo of repos) {
+        console.log(`Attempting to get public key data for ${repo}.`);
+
         const publicKeyData = await request(
             octokit,
             'GET /repos/{owner}/{repo}/actions/secrets/public-key',
@@ -46,6 +50,8 @@ export default async function (JWT, repos) {
                 headers: HEADER
             }
         );
+
+        console.log(`Attempting to set new access token for ${repo}.`);
 
         await request(
             octokit,
