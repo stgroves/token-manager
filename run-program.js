@@ -15,7 +15,7 @@ const repos = fs.readFileSync(process.env.REPOS, 'utf-8')
 
 const app = new App({
     appId: APP_ID, // Replace with your GitHub App ID
-    privateKey: process.env.TOKEN, // Replace with your private key
+    privateKey: process.env.PEM, // Replace with your private key
 });
 
 if (!app) {
