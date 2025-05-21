@@ -23,16 +23,18 @@ export default async function (JWT, repos) {
         },
         'access_token');
 
+    await _sodium.ready;
+    const sodium = _sodium;
+
     for (const repo of repos) {
-        const publicKey = await request(
+        const publicKeyData = await request(
             octokit,
             'GET /repos/{owner}/{repo}/actions/secrets/public-key',
             {
                 owner: OWNER,
                 repo: repo,
                 headers: HEADER
-            },
-            'key_id'
+            }
         );
 
         await request(
@@ -42,24 +44,19 @@ export default async function (JWT, repos) {
                 owner: OWNER,
                 repo: repo,
                 secret_name: KEY,
-                encrypted_value: encrypt(publicKey, accessToken),
-                key_id: publicKey,
+                encrypted_value: await encrypt(sodium, publicKeyData.key, accessToken),
+                key_id: publicKeyData.key_id,
                 headers: HEADER
             }
         );
     }
 }
 
-async function encrypt(key, token) {
-    return (async() => {
-        await _sodium.ready;
-        const sodium = _sodium;
+function encrypt(sodium, key, token) {
+    const binaryKey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
+    const binaryToken = sodium.from_string(token);
 
-        const binaryKey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
-        const binaryToken = sodium.from_string(token);
+    const encrypted = sodium.crypto_box_seal(binaryToken, binaryKey);
 
-        const encrypted = sodium.crypto_box_seal(binaryToken, binaryKey);
-
-        return sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL);
-    })();
+    return Promise.resolve(sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL));
 }
