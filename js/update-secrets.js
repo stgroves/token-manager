@@ -1,6 +1,6 @@
 import {Octokit} from '@octokit/core';
 import request from './request.js';
-import sodium from 'libsodium-wrappers';
+import _sodium from 'libsodium-wrappers';
 
 export default function (JWT, repos) {
     const octokit = new Octokit({auth: JWT});
@@ -50,13 +50,16 @@ export default function (JWT, repos) {
     });
 }
 
-function encrypt(key, token) {
-    return sodium.ready.then(() => {
+async function encrypt(key, token) {
+    return await (async() => {
+        await _sodium.ready;
+        const sodium = _sodium;
+
         const binaryKey = sodium.from_base64(key, sodium.base64_variants.ORIGINAL);
         const binaryToken = sodium.from_string(token);
 
         const encrypted = sodium.crypto_box_seal(binaryToken, binaryKey);
 
         return sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL);
-    });
+    })();
 }
