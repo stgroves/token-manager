@@ -1,1 +1,1 @@
-STGroves/JS-Utilities
+JS-Utilities
