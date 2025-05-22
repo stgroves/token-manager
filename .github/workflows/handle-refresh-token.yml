@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       code:
-        description: 'Initial OAuth code from https://github.com/login/oauth/authorize?client_id=Ov23li78daWXEg9q4LAS&scope=repo,write:packages,offline_access'
+        description: 'Initial OAuth code from https://github.com/login/oauth/authorize?client_id=Iv23liaI5AFKuWHs41ny&scope=repo,write:packages,offline_access'
         required: false
         default: ""
         type: string
@@ -27,7 +27,7 @@ jobs:
       - name: Run Program
         env:
           PROGRAM_PATH: 'HANDLE_REFRESH_TOKEN'
-          CLIENT_ID: 'Ov23li78daWXEg9q4LAS'
+          CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
           AUTH_CODE: ${{ inputs.code }}

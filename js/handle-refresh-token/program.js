@@ -24,7 +24,7 @@ export default async function () {
                 }
             );
 
-            console.log(response.refresh_token);
+            console.log(response);
         }
 
         console.log("Refreshing OAuth token...");
