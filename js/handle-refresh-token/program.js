@@ -20,7 +20,7 @@ export default async function () {
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_SECRET,
                     code: AUTH_CODE,
-                    headers: {accept: 'application/json'}
+                    headers: {Accept: 'application/json'}
                 }
             );
 
