@@ -15,7 +15,7 @@ export default async function () {
 
             const response = await request(
                 octokit,
-                'POST /login/oauth/access_token',
+                'POST https://github.com/login/oauth/access_token',
                 {
                     client_id: CLIENT_ID,
                     client_secret: CLIENT_SECRET,
