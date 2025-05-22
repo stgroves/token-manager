@@ -77,7 +77,7 @@ function encrypt(sodium, key, token) {
     return Promise.resolve(sodium.to_base64(encrypted, sodium.base64_variants.ORIGINAL));
 }
 
-import fs from 'fs';
+/*import fs from 'fs';
 import {App} from 'octokit';
 
 const APP_ID = 1301208;
@@ -101,4 +101,4 @@ if (!app) {
     process.exit(1);
 }
 
-await updateSecrets(app, repos);
+await updateSecrets(app, repos);*/
