@@ -1,7 +1,7 @@
 import runHandleRefreshToken from './js/handle-refresh-token/program.js'
 import runUpdateSecrets from './js/update-secrets/program.js'
 
-const PATH = process.env.PATH;
+const PATH = process.env.PROGRAM_PATH;
 
 switch (PATH) {
     case 'HANDLE_REFRESH_TOKEN':
