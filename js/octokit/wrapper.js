@@ -66,6 +66,7 @@ export default class OctokitWrapper {
         if (!OctokitWrapper.#sodium) {
             console.log('Preparing sodium');
             await sodium.ready;
+            console.log('sodium ready');
             OctokitWrapper.#sodium = sodium;
         }
 
