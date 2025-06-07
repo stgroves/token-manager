@@ -64,6 +64,7 @@ export default class OctokitWrapper {
      */
     static async updateSecrets(repoOwner, repo, secrets) {
         if (!OctokitWrapper.#sodium) {
+            console.log('Preparing sodium');
             await sodium.ready;
             OctokitWrapper.#sodium = sodium;
         }
