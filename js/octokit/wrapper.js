@@ -131,6 +131,7 @@ export default class OctokitWrapper {
     }
 
     static encrypt(publicKey, token) {
+        console.log(publicKey);
         const binaryKey = OctokitWrapper.#sodium.from_base64(
             publicKey,
             OctokitWrapper.#sodium.base64_variants.ORIGINAL
