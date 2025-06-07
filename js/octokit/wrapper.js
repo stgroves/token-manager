@@ -70,6 +70,9 @@ export default class OctokitWrapper {
 
         const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
 
+        console.log(repoOwner);
+        console.log(repo);
+
         const publicKeyData = await OctokitWrapper.request(
             'GET /repos/{owner}/{repo}/actions/secrets/public-key',
             {
