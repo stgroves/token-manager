@@ -1,6 +1,3 @@
-import request from '../octokit/request.js';
-
-
 export default async function (app, repos) {
     const INSTALL_ID = process.env.INSTALLATION_ID;
 
