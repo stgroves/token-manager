@@ -93,7 +93,7 @@ export default class OctokitWrapper {
                     owner: repoOwner,
                     repo: repo,
                     secret_name: secret.key,
-                    encrypted_value: await OctokitWrapper.encrypt(sodium, publicKeyData.key, secret.value),
+                    encrypted_value: await OctokitWrapper.encrypt(publicKeyData.key, secret.value),
                     key_id: publicKeyData.key_id,
                     headers: HEADER
                 }
