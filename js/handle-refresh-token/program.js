@@ -9,9 +9,12 @@ export default async function () {
     const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
     const AUTH_CODE = process.env.AUTH_CODE;
 
+    let accessToken;
+    let refreshToken;
+
     try {
         if (!REFRESH_TOKEN) {
-            console.log('Creating initial token.');
+            console.log('Creating initial OAuth token.');
 
             const response = await request(
                 octokit,
@@ -24,25 +27,28 @@ export default async function () {
                 }
             );
 
-            console.log(response);
+            accessToken = response.access_token;
+            refreshToken = response.refresh_token;
+        } else {
+            console.log('Refreshing OAuth token.');
+
+            const response = await request(
+                octokit,
+                "POST https://github.com/login/oauth/access_token",
+                {
+                    client_id: CLIENT_ID,
+                    client_secret: CLIENT_SECRET,
+                    refresh_token: REFRESH_TOKEN,
+                    grant_type: "refresh_token",
+                    headers: {accept: "application/json"}
+                }
+            );
+
+            accessToken = response.data.access_token;
+            refreshToken = response.data.refresh_token;
         }
 
-        console.log("Refreshing OAuth token...");
-        const response = await octokit.request("POST /login/oauth/access_token", {
-            client_id: CLIENT_ID,
-            client_secret: CLIENT_SECRET,
-            refresh_token: REFRESH_TOKEN,
-            grant_type: "refresh_token",
-            headers: {accept: "application/json"}
-        });
 
-        const newAccessToken = response.data.access_token;
-        const newRefreshToken = response.data.refresh_token;
-
-        console.log("New OAuth token refreshed:", newAccessToken);
-        console.log("New refresh token:", newRefreshToken);
-
-        return {newAccessToken, newRefreshToken};
     } catch (error) {
         console.error("Token refresh failed:", error.message);
     }

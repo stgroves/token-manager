@@ -38,5 +38,5 @@ jobs:
           INSTALLATION_ID: ${{ secrets.INSTALLATION_ID }}
           USER_ID: "STGroves"
           SECRET_KEY: "ACCESS_TOKEN"
-        run: |
-          node run-program.js --verbose
+          PROGRAM_PATH: 'UPDATE_SECRETS'
+        run: node run-program.js --verbose
