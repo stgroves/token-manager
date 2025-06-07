@@ -10,8 +10,7 @@ export default async function () {
         owner,
         repo,
         [
-            {key: 'ACCESS_TOKEN', value: accessToken},
-            {key: 'REFRESH_TOKEN', value: refreshToken},
+            { key: 'REFRESH_TOKEN', value: refreshToken }
         ]
     );
 }
