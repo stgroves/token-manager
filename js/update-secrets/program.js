@@ -1,5 +1,5 @@
 import request from '../octokit/request.js';
-import _sodium from 'libsodium-wrappers';
+
 
 export default async function (app, repos) {
     const INSTALL_ID = process.env.INSTALLATION_ID;
