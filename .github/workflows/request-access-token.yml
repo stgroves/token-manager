@@ -1,0 +1,29 @@
+name: Refresh PAT Token
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs daily
+  workflow_dispatch:
+
+jobs:
+  refresh-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Choose a stable version
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Get Token
+        env:
+          PROGRAM_PATH: 'REQUEST'
+          CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+        run: node run-program.js --verbose

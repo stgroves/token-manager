@@ -2,34 +2,74 @@ import {Octokit} from 'octokit';
 import sodium from 'libsodium-wrappers';
 
 export default class OctokitWrapper {
-    static #octokit;
+    static #octokit = new Octokit();
     static #sodium;
 
-    static async getAccessToken() {
-        OctokitWrapper.#octokit = new Octokit();
+    static #accessToken;
 
+    static HEADER = {'X-GitHub-Api-Version': '2022-11-28'};
+
+    static async getAccessTokenFromCode() {
+        const CLIENT_ID = process.env.CLIENT_ID;
+        const CLIENT_SECRET = process.env.CLIENT_SECRET;
+        const AUTH_CODE = process.env.AUTH_CODE;
+
+        if (!CLIENT_ID) {
+            console.error('CLIENT_ID not found!');
+            process.exit(1);
+        }
+
+        if (!CLIENT_SECRET) {
+            console.error('CLIENT_SECRET not found!');
+            process.exit(1);
+        }
+
+        if (!AUTH_CODE) {
+            console.error('AUTH_CODE not found!');
+            process.exit(1);
+        }
+
+        try {
+            console.log('Creating initial OAuth token.');
+
+            const response = await OctokitWrapper.request(
+                'POST https://github.com/login/oauth/access_token',
+                {
+                    client_id: CLIENT_ID,
+                    client_secret: CLIENT_SECRET,
+                    code: AUTH_CODE,
+                    headers: {Accept: 'application/json'}
+                }
+            );
+
+            return [response.access_token, response.refresh_token];
+        } catch (error) {
+            console.error("Token creation failed:", error.message);
+            process.exit(1);
+        }
+    }
+
+    static async getAccessTokenFromRefreshToken() {
         const CLIENT_ID = process.env.CLIENT_ID;
         const CLIENT_SECRET = process.env.CLIENT_SECRET;
         const REFRESH_TOKEN = process.env.REFRESH_TOKEN;
-        const AUTH_CODE = process.env.AUTH_CODE;
+
+        if (!CLIENT_ID) {
+            console.error('CLIENT_ID not found!');
+            process.exit(1);
+        }
+
+        if (!CLIENT_SECRET) {
+            console.error('CLIENT_SECRET not found!');
+            process.exit(1);
+        }
+
+        if (!REFRESH_TOKEN) {
+            console.error('REFRESH_TOKEN not found!');
+            process.exit(1);
+        }
 
         try {
-            if (!REFRESH_TOKEN) {
-                console.log('Creating initial OAuth token.');
-
-                const response = await OctokitWrapper.request(
-                    'POST https://github.com/login/oauth/access_token',
-                    {
-                        client_id: CLIENT_ID,
-                        client_secret: CLIENT_SECRET,
-                        code: AUTH_CODE,
-                        headers: {Accept: 'application/json'}
-                    }
-                );
-
-                return [response.access_token, response.refresh_token];
-            }
-
             console.log('Refreshing OAuth token.');
 
             const response = await OctokitWrapper.request(
@@ -55,6 +95,21 @@ export default class OctokitWrapper {
         });
     }
 
+    static async storeRefreshToken(accessToken, refreshToken) {
+        if (accessToken !== OctokitWrapper.#accessToken)
+            OctokitWrapper.authoriseOctokit(accessToken);
+
+        const [owner, repo] = process.env.GITHUB_REPOSITORY.split('/');
+
+        await OctokitWrapper.updateSecrets(
+            owner,
+            repo,
+            [
+                { key: 'REFRESH_TOKEN', value: refreshToken }
+            ]
+        );
+    }
+
     /**
      *
      * @param {String} repoOwner
@@ -64,23 +119,22 @@ export default class OctokitWrapper {
      */
     static async updateSecrets(repoOwner, repo, secrets) {
         if (!OctokitWrapper.#sodium) {
+
             console.log('Preparing sodium');
+
             await sodium.ready;
+
             console.log('sodium ready');
+
             OctokitWrapper.#sodium = sodium;
         }
-
-        const HEADER = {"X-GitHub-Api-Version": "2022-11-28"};
-
-        console.log(repoOwner);
-        console.log(repo);
 
         const publicKeyData = await OctokitWrapper.request(
             'GET /repos/{owner}/{repo}/actions/secrets/public-key',
             {
                 owner: repoOwner,
                 repo: repo,
-                headers: HEADER
+                headers: OctokitWrapper.HEADER
             }
         );
 
@@ -95,7 +149,7 @@ export default class OctokitWrapper {
                     secret_name: secret.key,
                     encrypted_value: await OctokitWrapper.encrypt(publicKeyData.key, secret.value),
                     key_id: publicKeyData.key_id,
-                    headers: HEADER
+                    headers: OctokitWrapper.HEADER
                 }
             );
         }

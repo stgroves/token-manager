@@ -1,12 +1,6 @@
 name: Handle Refresh Token
 on:
   workflow_dispatch:
-    inputs:
-      code:
-        description: 'Initial OAuth code from https://github.com/login/oauth/authorize?client_id=Iv23liaI5AFKuWHs41ny&scope=repo,write:packages,offline_access'
-        required: false
-        default: ""
-        type: string
   schedule:
     - cron: '0 0 1 */5 *'
 jobs:
@@ -26,9 +20,8 @@ jobs:
 
       - name: Run Program
         env:
-          PROGRAM_PATH: 'HANDLE_REFRESH_TOKEN'
+          PROGRAM_PATH: 'REFRESH'
           CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
-          AUTH_CODE: ${{ inputs.code }}
-        run: node run-program.js --verbose
+        run: node run-update-refresh-token.js --verbose

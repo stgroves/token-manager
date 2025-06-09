@@ -1,0 +1,31 @@
+name: Handle Refresh Token
+on:
+  workflow_dispatch:
+    inputs:
+      code:
+        description: 'Initial OAuth code from https://github.com/login/oauth/authorize?client_id=Iv23liaI5AFKuWHs41ny&scope=repo,write:packages,offline_access'
+        required: true
+        default: ""
+        type: string
+jobs:
+  refresh-token:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20' # Choose a stable version
+
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Run Program
+        env:
+          PROGRAM_PATH: 'SETUP'
+          CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          AUTH_CODE: ${{ inputs.code }}
+        run: node run-program.js --verbose
