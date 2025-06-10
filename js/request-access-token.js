@@ -13,7 +13,7 @@ export default async function () {
         console.log('Refresh Token stored');
 
         const fs = await import('fs');
-        fs.appendFileSync(process.env.GITHUB_ENV, `ACCESS_TOKEN=${accessToken}\n`);
+        fs.appendFileSync(process.env.GITHUB_OUTPUT, `ACCESS_TOKEN=${accessToken}\n`);
     } catch (e) {
         console.error(e);
         process.exit(1);
