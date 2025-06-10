@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Program
         env:
-          PROGRAM_PATH: 'SETUP'
+          EXECUTION_PATH: 'SETUP'
           CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           AUTH_CODE: ${{ inputs.code }}

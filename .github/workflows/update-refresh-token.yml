@@ -20,7 +20,7 @@ jobs:
 
       - name: Run Program
         env:
-          PROGRAM_PATH: 'REFRESH'
+          EXECUTION_PATH: 'REFRESH'
           CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
