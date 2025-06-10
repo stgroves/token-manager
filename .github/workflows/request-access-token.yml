@@ -14,12 +14,15 @@ jobs:
       access-token: ${{ steps.generate-token.outputs.ACCESS_TOKEN }}
     steps:
       - name: Set Up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: '20' # Choose a stable version
 
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
 
       - name: Install Dependencies
         run: npm install
