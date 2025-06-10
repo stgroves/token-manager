@@ -21,8 +21,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
         with:
-          repository: ${{ github.repository }}
-          ref: ${{ github.ref }}
+          repository: stgroves/token-manager
+          ref: main
 
       - name: Install Dependencies
         run: npm install

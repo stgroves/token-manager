@@ -14,9 +14,6 @@ jobs:
 
       - name: Checkout Repository
         uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository }}
-          ref: ${{ github.ref }}
 
       - name: Install Dependencies
         run: npm install
