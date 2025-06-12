@@ -126,12 +126,13 @@ export default class OctokitWrapper {
             OctokitWrapper.#sodium = sodium;
         }
 
-        const {data: publicKey} = await OctokitWrapper.getAppOctokit().rest.actions.getRepoPublicKey({owner, repo});
+        const octokit = await OctokitWrapper.getAppOctokit();
+        const {data: publicKey} = octokit.rest.actions.getRepoPublicKey({owner, repo});
 
         console.log(`Attempting to store secrets for ${repo}.`);
 
         for (const secret of secrets) {
-            await OctokitWrapper.getAppOctokit().rest.actions.createOrUpdateRepoSecret(
+            await octokit.rest.actions.createOrUpdateRepoSecret(
                 {
                     owner,
                     repo,
