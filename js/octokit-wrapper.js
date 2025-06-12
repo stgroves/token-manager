@@ -126,7 +126,7 @@ export default class OctokitWrapper {
             OctokitWrapper.#sodium = sodium;
         }
 
-        console.log(process.env.PEM);
+        console.log(process.env.PEM.split(' ').join('\n'));
 
         const octokit = await OctokitWrapper.getAppOctokit();
         const {data: publicKey} = await octokit.rest.actions.getRepoPublicKey({owner, repo});
