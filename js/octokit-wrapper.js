@@ -126,7 +126,13 @@ export default class OctokitWrapper {
             OctokitWrapper.#sodium = sodium;
         }
 
-        console.log(process.env.PEM.split(' ').join('\n'));
+        const PATTERN = /-----BEGIN RSA PRIVATE KEY-----([\s\S]*?)-----END RSA PRIVATE KEY-----/g
+        const pem = process.env.PEM.replace(PATTERN, (_, body) => {
+            const modified = body.replace(/\s+/g, '\n');
+            process.env.PEM.replace(body, modified);
+        });
+
+        console.log(pem);
 
         const octokit = await OctokitWrapper.getAppOctokit();
         const {data: publicKey} = await octokit.rest.actions.getRepoPublicKey({owner, repo});
