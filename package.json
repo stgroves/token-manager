@@ -1,18 +1,13 @@
 {
   "dependencies": {
-    "jsonwebtoken": "^9.0.2",
     "libsodium-wrappers": "^0.7.15",
     "octokit": "^5.0.2"
   },
   "description": "",
   "name": "token-refresher",
-  "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/STGroves/Token-Refresher.git"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "url": "https://github.com/stgroves/token-refresher.git"
   },
   "type": "module",
   "version": "1.0.0"

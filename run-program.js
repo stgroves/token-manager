@@ -1,8 +1,10 @@
-import runSetup from './js/setup.js'
+import TokenManager from './js/token-manager.js';
 import runUpdateRefreshToken from './js/update-refresh-token.js'
 import runRequestAccessToken from './js/request-access-token.js'
 
 const PATH = process.env.EXECUTION_PATH;
+
+const tokenManager = new TokenManager();
 
 switch (PATH) {
     case 'REFRESH':
@@ -10,7 +12,7 @@ switch (PATH) {
         break;
 
     case 'SETUP':
-        runSetup();
+        await tokenManager.setup();
         break;
 
     case 'REQUEST':

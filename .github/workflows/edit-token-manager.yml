@@ -1,0 +1,43 @@
+name: Edit Token Manager
+on:
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: Repo to be added. Must be in ORG/REPO format and contain only [A-Za-z0-9.-_]
+        required: true
+        type: string
+      action:
+        description: Action to be performed.
+        type: choice
+        required: true
+        options:
+          - 'Add'
+          - 'Remove'
+jobs:
+  addRepo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set Up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Choose a stable version
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          repository: stgroves/token-manager
+          ref: main
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Map Action Choice
+        run: |
+          declare -A ACTION_MAP=(['Add']='ADD_REPO' ['Remove']='REMOVE_REPO')
+          echo "EXECUTION_PATH=${ACTION_MAP[${{ inputs.action }}]}" >> $GITHUB_ENV
+
+      - name: Edit Manager
+        env:
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          TARGET: ${{ inputs.repo }}
+        run: node run-program.js --verbose
