@@ -32,6 +32,13 @@ jobs:
   refresh-token:
     runs-on: ubuntu-latest
     steps:
+      - name: Mask Inputs
+        run: |
+          echo "::add-mask::${{ inputs.pem }}"
+          echo "::add-mask::${{ inputs.install_id }}"
+          echo "::add-mask::${{ inputs.client_secret }}"
+          echo "::add-mask::${{ inputs.code }}"
+
       - name: Set Up Node.js
         uses: actions/setup-node@v4
         with:

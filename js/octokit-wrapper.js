@@ -144,11 +144,13 @@ export default class OctokitWrapper {
     }
 
     static async requestAsApp(restQuery, queryObject, propertyName = null) {
-        return OctokitWrapper.#request(OctokitWrapper.getAppOctokit(), restQuery, queryObject, propertyName);
+        const octokit = await OctokitWrapper.getAppOctokit();
+        return await OctokitWrapper.#request(octokit, restQuery, queryObject, propertyName);
     }
 
     static async requestAsUser(restQuery, queryObject, propertyName = null) {
-        return OctokitWrapper.#request(OctokitWrapper.getUserOctokit(), restQuery, queryObject, propertyName);
+        const octokit = await OctokitWrapper.getUserOctokit();
+        return await OctokitWrapper.#request(octokit, restQuery, queryObject, propertyName);
     }
 
     static async #request(octokit, restQuery, queryObject, propertyName) {
