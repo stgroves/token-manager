@@ -13,7 +13,13 @@ export default class OctokitWrapper {
 
     static async getAppOctokit() {
         if (!OctokitWrapper.#appOctokit) {
-            const app = new App({appId: '1301208', privateKey: process.env.PEM});
+            const PATTERN = /-----BEGIN RSA PRIVATE KEY-----([\s\S]*?)-----END RSA PRIVATE KEY-----/g
+            const pem = process.env.PEM.replace(PATTERN, (_, body) => {
+                const modified = body.replace(/\s+/g, '\n');
+                return process.env.PEM.replace(body, modified);
+            });
+
+            const app = new App({appId: '1301208', privateKey: pem});
             OctokitWrapper.#appOctokit = await app.getInstallationOctokit(process.env.INSTALL_ID);
         }
 
@@ -125,14 +131,6 @@ export default class OctokitWrapper {
 
             OctokitWrapper.#sodium = sodium;
         }
-
-        const PATTERN = /-----BEGIN RSA PRIVATE KEY-----([\s\S]*?)-----END RSA PRIVATE KEY-----/g
-        const pem = process.env.PEM.replace(PATTERN, (_, body) => {
-            const modified = body.replace(/\s+/g, '\n');
-            process.env.PEM.replace(body, modified);
-        });
-
-        console.log(pem);
 
         const octokit = await OctokitWrapper.getAppOctokit();
         const {data: publicKey} = await octokit.rest.actions.getRepoPublicKey({owner, repo});
