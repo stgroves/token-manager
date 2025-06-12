@@ -130,6 +130,7 @@ export default class OctokitWrapper {
         const {data: publicKey} = octokit.rest.actions.getRepoPublicKey({owner, repo});
 
         console.log(`Attempting to store secrets for ${repo}.`);
+        console.log(publicKey);
 
         for (const secret of secrets) {
             await octokit.rest.actions.createOrUpdateRepoSecret(
