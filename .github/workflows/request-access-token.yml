@@ -30,7 +30,6 @@ jobs:
       - name: Get Token
         env:
           EXECUTION_PATH: 'REQUEST'
-          CLIENT_ID: 'Iv23liaI5AFKuWHs41ny'
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
         id: generate-token

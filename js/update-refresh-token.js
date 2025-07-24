@@ -1,4 +1,4 @@
-import OctokitWrapper from './octokit-wrapper.js';
+import OctokitWrapper from '@stgroves/octokit-wrapper';
 
 export default async function () {
     console.log('Running Refresh Token update');

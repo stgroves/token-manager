@@ -1,4 +1,4 @@
-name: Edit Token Manager
+name: Add Repo to Token Manager
 on:
   workflow_dispatch:
     inputs:
@@ -6,13 +6,10 @@ on:
         description: Repo to be added. Must be in ORG/REPO format and contain only [A-Za-z0-9.-_]
         required: true
         type: string
-      action:
-        description: Action to be performed.
-        type: choice
-        required: true
-        options:
-          - 'Add'
-          - 'Remove'
+      isCritical:
+        description: Is the repo critical to operations?
+        required: false
+        type: boolean
 jobs:
   addRepo:
     runs-on: ubuntu-latest
@@ -31,13 +28,10 @@ jobs:
       - name: Install Dependencies
         run: npm install
 
-      - name: Map Action Choice
-        run: |
-          declare -A ACTION_MAP=(['Add']='ADD_REPO' ['Remove']='REMOVE_REPO')
-          echo "EXECUTION_PATH=${ACTION_MAP[${{ inputs.action }}]}" >> $GITHUB_ENV
-
-      - name: Edit Manager
+      - name: Run Program
         env:
-          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          EXECUTION_PATH: 'ADD_REPO'
           TARGET: ${{ inputs.repo }}
+          CRITICAL: ${{ inputs.isCritical }}
+          SECRETS: ${{ secrets.SECRETS }}
         run: node run-program.js --verbose

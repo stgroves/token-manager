@@ -18,16 +18,6 @@ on:
         description: 'OAuth Client Secret'
         required: true
         type: string
-      max_page_count:
-        description: 'Max number of pages for hashes. (Default: 98, Max: 98)'
-        required: false
-        default: 98
-        type: number
-      max_page_size:
-        description: 'Max number of bytes allocated for new entries per page. (Default: 60000, Max: 64000)'
-        required: false
-        default: 60000
-        type: number
 jobs:
   refresh-token:
     runs-on: ubuntu-latest
@@ -56,6 +46,4 @@ jobs:
           INSTALL_ID: ${{ inputs.install_id }}
           PEM: ${{ inputs.pem }}
           AUTH_CODE: ${{ inputs.code }}
-          MAX_PAGES: ${{ inputs.max_page_count }}
-          MAX_PAGE_SIZE: ${{ inputs.max_page_size }}
         run: node run-program.js --verbose

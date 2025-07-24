@@ -1,7 +1,8 @@
 {
   "dependencies": {
-    "libsodium-wrappers": "^0.7.15",
-    "octokit": "^5.0.2"
+    "@stgroves/js-utilities": "^0.1.1",
+    "@stgroves/octokit-wrapper": "^2.1.6",
+    "libsodium-wrappers": "^0.7.15"
   },
   "description": "",
   "name": "token-refresher",
